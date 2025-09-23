@@ -6,7 +6,7 @@ pipeline {
         // ===== FRONTEND BUILD =====
         stage('Build Frontend') {
             steps {
-                dir('STUDENTAPI-REACT') {
+                dir('TASKMANAGER-REACT') {
                     bat 'npm install'
                     bat 'npm run build'
                 }
@@ -17,11 +17,11 @@ pipeline {
         stage('Deploy Frontend to Tomcat') {
             steps {
                 bat '''
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reactstudentapi" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reactstudentapi"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
                 )
-                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reactstudentapi"
-                xcopy /E /I /Y STUDENTAPI-REACT\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reactstudentapi"
+                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
+                xcopy /E /I /Y TASKMANAGER-REACT\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
                 '''
             }
         }
@@ -29,7 +29,7 @@ pipeline {
         // ===== BACKEND BUILD =====
         stage('Build Backend') {
             steps {
-                dir('STUDENTAPI-SPRINGBOOT') {
+                dir('TASKMANAGER-SPRINGBOOT') {
                     bat 'mvn clean package'
                 }
             }
@@ -39,13 +39,13 @@ pipeline {
         stage('Deploy Backend to Tomcat') {
             steps {
                 bat '''
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springbootstudentapi.war" (
-                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springbootstudentapi.war"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi.war" (
+                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi.war"
                 )
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springbootstudentapi" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springbootstudentapi"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi"
                 )
-                copy "STUDENTAPI-SPRINGBOOT\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\"
+                copy "TASKMANAGER-SPRINGBOOT\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\"
                 '''
             }
         }
