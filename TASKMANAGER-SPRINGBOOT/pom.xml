@@ -22,6 +22,9 @@
         <java.version>21</java.version>
     </properties>
 
+    <!-- Change packaging to WAR -->
+    <packaging>war</packaging>
+
     <dependencies>
         <!-- Spring Boot Starter Dependencies -->
         <dependency>
@@ -56,6 +59,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Tomcat as provided -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -65,7 +75,7 @@
     </dependencies>
 
     <build>
-        <finalName>taskmanager</finalName>
+        <finalName>springboottaskapi</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
