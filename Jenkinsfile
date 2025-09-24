@@ -16,13 +16,13 @@ pipeline {
         // ===== FRONTEND DEPLOY =====
         stage('Deploy Frontend to Tomcat') {
             steps {
-                bat '''
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
+                bat """
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\reacttaskmanager" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\reacttaskmanager"
                 )
-                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
-                xcopy /E /I /Y TASKMANAGER-REACT\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\reacttaskmanager"
-                '''
+                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\reacttaskmanager"
+                xcopy /E /I /Y "TASKMANAGER-REACT\\dist\\*" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\reacttaskmanager\\"
+                """
             }
         }
 
@@ -38,18 +38,17 @@ pipeline {
         // ===== BACKEND DEPLOY =====
         stage('Deploy Backend to Tomcat') {
             steps {
-                bat '''
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi.war" (
-                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi.war"
+                bat """
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\springboottaskapi.war" (
+                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\springboottaskapi.war"
                 )
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\springboottaskapi"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\springboottaskapi" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\springboottaskapi"
                 )
-                copy "TASKMANAGER-SPRINGBOOT\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat10.1\\webapps\\"
-                '''
+                copy "TASKMANAGER-SPRINGBOOT\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat10.1\\webapps\\springboottaskapi.war"
+                """
             }
         }
-
     }
 
     post {
