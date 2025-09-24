@@ -1,49 +1,51 @@
 package com.taskmanager.controller;
 
-import java.util.List;
-
+import com.taskmanager.model.Task;
+import com.taskmanager.model.User;
+import com.taskmanager.repository.TaskRepository;
+import com.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.taskmanager.model.Task;
-import com.taskmanager.service.TaskService;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@CrossOrigin(origins = "http://localhost:5173") // Allow React frontend to access
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     @Autowired
-    private TaskService taskService;
+    private TaskRepository taskRepository;
 
-    // Create a new Task
-    @PostMapping
-    public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task);
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/add/{userId}")
+    @Transactional
+    public String addTask(@PathVariable Long userId, @RequestBody Task task) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return "User not found";
+        }
+        task.setUser(user); // Link task to user
+        task.setDeadline(LocalDateTime.now().plusHours(1)); // Example deadline
+        taskRepository.save(task);
+        return "Task added";
     }
 
-    // Get all Tasks
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    @GetMapping("/{userId}")
+    public List<Task> getTasks(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null)
+            return List.of();
+        return taskRepository.findByUser(user);
     }
 
-    // Get a Task by ID
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
-    }
-
-    // Update a Task
-    @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
-        task.setTaskId(id);
-        return taskService.updateTask(task);
-    }
-
-    // Delete a Task
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTaskById(id);
+    public String deleteTask(@PathVariable Long id) {
+        taskRepository.deleteById(id);
+        return "Task deleted";
     }
 }

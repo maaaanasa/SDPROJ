@@ -1,11 +1,11 @@
 package com.taskmanager.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.taskmanager.model.Task;
+import com.taskmanager.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
+import java.util.List;
+
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    // Custom queries can go here if needed
+    List<Task> findByUser(User user);
 }

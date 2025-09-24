@@ -3,22 +3,17 @@ package com.taskmanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "tasks")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private LocalDateTime deadline;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String name;
+    private String email;
+    private String password;
 }
